@@ -2,6 +2,6 @@ import { Router } from "express";
 
 const router = Router()
 
-router.get('/admin/animais', adminListarAnimais)
-router.patch('/admin/animais/:id', adminListarAnimal)
-router.delete('/admin/animais/:id', adminRemoverAnimal)
+router.get('/animais', adminListarAnimais)
+router.patch('/animais/:id', adminListarAnimal)
+router.delete('/animais/:id', adminRemoverAnimal)
