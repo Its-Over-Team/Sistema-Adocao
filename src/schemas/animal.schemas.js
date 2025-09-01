@@ -7,5 +7,5 @@ export const animalSchema = z.object({
     vacinado: z.boolean(),
     adotado: z.boolean(),
     descricao: z.string(),
-    foto: z.instanceof(Buffer)
+    foto: z.any()
 })
