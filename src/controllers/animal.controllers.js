@@ -1,3 +1,4 @@
+import { Animal } from '../models/Modelos'
 import { animalSchema } from '../schemas/animal.schemas'
 import { randomUUID } from 'crypto'
 import z from 'zod'
