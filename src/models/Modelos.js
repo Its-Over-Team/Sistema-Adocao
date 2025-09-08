@@ -1,20 +1,15 @@
-import { Sequelize } from 'sequelize';
-import AnimalModel from './Animal.js';
-import TutorModel from './Tutor.js';
-import QuestionarioModel from './Questionario.js';
-import PedidoAdocaoModel from './PedidoAdocao.js';
-import DoacaoModel from './Doacao.js';
+import AnimalModel from './Animal.js'
+import TutorModel from './Usuario.js'
+import QuestionarioModel from './Questionario.js'
+import PedidoAdocaoModel from './PedidoAdocao.js'
+import DoacaoModel from './Doacao.js'
+import sequelize from '../config/database'
 
-export const sequelize = new Sequelize({
-    dialect: 'sqlite',
-    storage: './database.sqlite',
-});
-
-export const Animal = AnimalModel(sequelize);
-export const Tutor = TutorModel(sequelize);
-export const Questionario = QuestionarioModel(sequelize);
-export const PedidoAdocao = PedidoAdocaoModel(sequelize);
-export const Doacao = DoacaoModel(sequelize);
+export const Animal = AnimalModel(sequelize)
+export const Tutor = TutorModel(sequelize)
+export const Questionario = QuestionarioModel(sequelize)
+export const PedidoAdocao = PedidoAdocaoModel(sequelize)
+export const Doacao = DoacaoModel(sequelize)
 
 // Associações
 // Explicação das associações:
@@ -23,6 +18,6 @@ export const Doacao = DoacaoModel(sequelize);
 // - Um Animal pode ter vários Pedidos de Adoção.
 // A tabela PedidosAdocao serve como uma tabela de junção entre Tutores e Animais.
 
-await sequelize.sync();
+await sequelize.sync()
 
-export default { sequelize, Animal, Tutor, Questionario, PedidoAdocao, Doacao };
+export default { Animal, Tutor, Questionario, PedidoAdocao, Doacao }
