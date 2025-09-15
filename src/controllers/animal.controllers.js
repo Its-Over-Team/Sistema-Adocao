@@ -2,6 +2,7 @@ import { Animal } from '../models/Modelos'
 import { animalSchema } from '../schemas/animal.schemas'
 import z from 'zod'
 
+//POST /animais
 export const criarAnimais = async (req, res) => {
   try {
     const data = animalSchema.parse(req.body)
@@ -14,7 +15,6 @@ export const criarAnimais = async (req, res) => {
 
     const novoAnimal = await Animal.create(animal)
 
-
     return res.status(201).json(novoAnimal)
   } catch (err) {
     if (err instanceof z.ZodError) {
@@ -26,5 +26,28 @@ export const criarAnimais = async (req, res) => {
         erro: 'Erro interno ao cadastrar o animal.',
       })
     }
+  }
+}
+
+//GET /animais
+export const listarAnimais = async (req, res) => {
+  try {
+    const animais = await Animal.findAll()
+    return res.status(200).json(animais)
+  } catch {
+    return res.status(500).json({ erro: 'Erro ao buscar animais' })
+  }
+}
+
+export const listarAnimal = async (req, res) => {
+  try {
+    const animalID = req.params
+    const animal = await Animal.findOne(animalID)
+    if (!animal) {
+      return res.status(404).json({ erro: 'Animal não encontrado' })
+    }
+    return res.status(200).json(animal)
+  } catch {
+    return res.status(500).json({ erro: 'Erro interno ao buscar animal' })
   }
 }
