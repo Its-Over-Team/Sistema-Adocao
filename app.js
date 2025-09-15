@@ -3,9 +3,9 @@ import adminRoutes from './src/routes/admin.routes.js'
 import animalRoutes from './src/routes/animal.routes.js'
 import tutorRoutes from './src/routes/tutor.routes.js'
 import questionarioRoutes from './src/routes/questionario.routes.js'
-import adocaoRoutes from './src/routes/adocao.routes.js'
+import adocaoRoutes from './src/routes/adocoes.routes.js'
 import loginRoutes from './src/routes/login.routes.js'
-import doacaoRoutes from './src/routes/doacao.routes.js'
+import doacaoRoutes from './src/routes/doacoes.routes.js'
 
 export const app = express()
 

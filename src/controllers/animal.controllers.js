@@ -17,7 +17,7 @@ export const criarAnimais = async (req, res) => {
     }
 
     const novoAnimal = await Animal.create(animal)
-
+    
     return res.status(201).json(novoAnimal)
   } catch (err) {
     if (err instanceof z.ZodError) {

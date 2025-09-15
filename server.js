@@ -2,4 +2,4 @@ import app from './app.js'
 
 const PORT = 3000
 
-app.listen(PORT, () => console.log(`Aplicação rodando na porta ${PORT}`))
+app.listen(PORT, () => console.log(`Aplicação rodando na porta ${PORT}: http:localhost/${PORT}`))
