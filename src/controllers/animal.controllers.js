@@ -41,3 +41,16 @@ export const listarAnimais = async (req, res) => {
     return res.status(500).json({ erro: 'Erro ao buscar animais' })
   }
 }
+
+export const listarAnimal = async (req, res) => {
+  try {
+    const animalID = req.params
+    const animal = await Animal.findOne(animalID)
+    if (!animal) {
+      return res.status(404).json({ erro: 'Animal não encontrado' })
+    }
+    return res.status(200).json(animal)
+  } catch {
+    return res.status(500).json({ erro: 'Erro interno ao buscar animal' })
+  }
+}
