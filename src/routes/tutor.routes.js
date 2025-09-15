@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { criarTutor, listarTutor, atualizarTutor } from "../controllers/tutores.controllers";
 
 const router = Router()
 
