@@ -1,8 +1,10 @@
+import { ca } from 'zod/locales'
 import { Animal } from '../models/Modelos'
 import { animalSchema } from '../schemas/animal.schemas'
 import { randomUUID } from 'crypto'
 import z from 'zod'
 
+//POST /animais
 export const criarAnimais = async (req, res) => {
   try {
     const data = animalSchema.parse(req.body)
@@ -27,5 +29,15 @@ export const criarAnimais = async (req, res) => {
         erro: 'Erro interno ao cadastrar o animal.',
       })
     }
+  }
+}
+
+//GET /animais
+export const listarAnimais = async (req, res) => {
+  try {
+    const animais = await Animal.findAll()
+    return res.status(200).json(animais)
+  } catch {
+    return res.status(500).json({ erro: 'Erro ao buscar animais' })
   }
 }
