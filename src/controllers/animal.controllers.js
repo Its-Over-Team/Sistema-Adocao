@@ -1,6 +1,5 @@
 import { Animal } from '../models/Modelos'
 import { animalSchema } from '../schemas/animal.schemas'
-import { randomUUID } from 'crypto'
 import z from 'zod'
 
 export const criarAnimais = async (req, res) => {
@@ -9,12 +8,12 @@ export const criarAnimais = async (req, res) => {
     const foto = req.file ? req.file.buffer : null
 
     const animal = {
-      id: randomUUID(),
       ...data,
       foto,
     }
 
     const novoAnimal = await Animal.create(animal)
+
 
     return res.status(201).json(novoAnimal)
   } catch (err) {

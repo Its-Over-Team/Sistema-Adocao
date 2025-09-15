@@ -1,6 +1,5 @@
 import { Tutor } from '../models/Modelos'
 import { tutorSchema } from '../schemas/tutor.schemas'
-import { randomUUID } from 'crypto'
 
 //POST - /tutores
 export const criarTutor = async (req, res) => {
@@ -33,14 +32,42 @@ export const criarTutor = async (req, res) => {
         erro: 'Todos os campos obrigatórios devem ser preenchidos corretamente.',
       })
     }
-    const tutor = {
-      id: randomUUID(),
-      ...data,
-      administrador: false,
-    }
-    const novoTutor = await Tutor.create(tutor)
+
+    const novoTutor = await Tutor.create(data)
     return res.status(201).json(novoTutor)
   } catch {
-    return res.status(500).json({ erro: 'Erro interno ao cadastrar o animal.' })
+    return res.status(500).json({ erro: 'Erro interno ao cadastrar o tutor.' })
+  }
+}
+
+//GET - /tutores/:id
+export const listarTutor = async (req, res) => {
+  try {
+    const tutorId = req.params
+    const tutor = await Tutor.findOne({ where: tutorId })
+
+    if (!tutor) {
+      return res.status(404).json({ erro: 'Erro ' })
+    }
+
+    return res.status(200).json(tutor)
+  } catch {
+    return res.status(500).json({ erro: 'Erro interno ao listar tutor' })
+  }
+}
+
+//PATCH - /tutores/:id - fazer questionario e finalizar
+export const atualizarTutor = async (req, res) => {
+  try {
+    const tutorId = req.params
+
+    const tutorPatch = req.body
+
+    const novoTutor = await Tutor.update(tutorPatch, { where: tutorId })
+
+    return res.status(200).json(novoTutor)
+
+  } catch {
+    return res.status(500).json({ erro: 'Erro interno ao atualizar tutor' })
   }
 }
