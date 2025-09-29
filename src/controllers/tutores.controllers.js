@@ -1,3 +1,4 @@
+import { ZodError } from 'zod'
 import { Tutor } from '../models/Modelos'
 import { tutorSchema } from '../schemas/tutor.schemas'
 
@@ -21,8 +22,13 @@ export const criarTutor = async (req, res) => {
       where: { facebook: data.facebook },
     })
 
+    if (emailExistente) {
+      return res.status(400).json({
+        erro: 'Todos os campos obrigatórios devem ser preenchidos corretamente.',
+      })
+    }
+
     if (
-      emailExistente |
       telefoneExistente |
       celularExistente |
       instagramExistente |
@@ -35,7 +41,12 @@ export const criarTutor = async (req, res) => {
 
     const novoTutor = await Tutor.create(data)
     return res.status(201).json(novoTutor)
-  } catch {
+  } catch (err) {
+    if (err instanceof ZodError) {
+      return res.status(400).json({
+        erro: 'Todos os campos obrigatórios devem ser preenchidos corretamente.',
+      })
+    }
     return res.status(500).json({ erro: 'Erro interno ao cadastrar o tutor.' })
   }
 }
@@ -66,7 +77,6 @@ export const atualizarTutor = async (req, res) => {
     const novoTutor = await Tutor.update(tutorPatch, { where: tutorId })
 
     return res.status(200).json(novoTutor)
-
   } catch {
     return res.status(500).json({ erro: 'Erro interno ao atualizar tutor' })
   }

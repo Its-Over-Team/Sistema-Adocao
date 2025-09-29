@@ -13,7 +13,7 @@ app.use(express.json())
 
 // app.use('/admin', adminRoutes)
 // app.use('/animais', animalRoutes)
-app.use('/tutores', tutorRoutes)
+app.use('/usuario', tutorRoutes)
 // app.use('/questionário', questionarioRoutes)
 // app.use('/adocoes', adocaoRoutes)
 // app.use('/login', loginRoutes)
