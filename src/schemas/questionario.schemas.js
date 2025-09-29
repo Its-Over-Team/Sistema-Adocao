@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const questionarioSchema = z.object({
+    tutoId: z.uuidv4(),
     empregado: z.boolean().nullable(),
     quantos_animais_possui: z.number(),
     motivos_para_adotar: z.string(),

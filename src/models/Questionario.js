@@ -11,6 +11,10 @@ export default (sqlize) => {
         primaryKey: true,
         allowNull: false,
       },
+      tutorId: {
+        type: DataTypes.UUIDV4,
+        allowNull: false,
+      },
       empregado: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
