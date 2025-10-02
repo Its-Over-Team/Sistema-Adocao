@@ -5,6 +5,7 @@ export const animalSchema = z.object({
     especie: z.string(),
     porte: z.string(),
     vacinado: z.boolean(),
+    castrado: z.boolean(),
     adotado: z.boolean(),
     descricao: z.string(),
     foto: z.any()

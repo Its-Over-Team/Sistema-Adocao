@@ -33,7 +33,8 @@ export const criarAnimais = async (req, res) => {
 export const listarAnimais = async (req, res) => {
   try {
     const animais = await Animal.findAll()
-    return res.status(200).json(animais)
+    const total = animais.length
+    return res.status(200).json(animais, total)
   } catch {
     return res.status(500).json({ erro: 'Erro ao buscar animais' })
   }

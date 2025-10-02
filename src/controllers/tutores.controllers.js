@@ -24,7 +24,7 @@ export const criarTutor = async (req, res) => {
 
     if (emailExistente) {
       return res.status(400).json({
-        erro: 'Todos os campos obrigatórios devem ser preenchidos corretamente.',
+        erro: 'Email preenchido já está sendo utilizado.',
       })
     }
 

@@ -7,7 +7,7 @@ export const criarQuestionario = async (req, res) => {
   try {
     const data = questionarioSchema.parse(req.body)
 
-    const tutorId = data.tutoId
+    const tutorId = data.tutorId
 
     const tutorExiste = Tutor.findOne(tutorId, {
       where: {
@@ -16,7 +16,7 @@ export const criarQuestionario = async (req, res) => {
     })
 
     if (!tutorExiste) {
-      return res.status(400).json({ erro: 'Tutor inexistente.' })
+      return res.status(404).json({ erro: 'Tutor inexistente.' })
     }
 
     const novoQuestionario = await Questionario.create(data)
@@ -28,6 +28,6 @@ export const criarQuestionario = async (req, res) => {
         erro: 'Todos os campos obrigatórios devem ser preenchidos corretamente.',
       })
     }
-    return res.status(400).json({ erro: 'Erro interno ao cadastrar questionário.' })
+    return res.status(500).json({ erro: 'Erro interno ao cadastrar questionário.' })
   }
 }
