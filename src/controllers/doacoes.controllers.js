@@ -2,6 +2,7 @@ import { Doacao } from '../models/Modelos'
 import { doacoesSchema } from '../schemas/doacao.schemas'
 import z from 'zod'
 
+//POST /doacoes
 export const criarDoacao = async (req, res) => {
   try {
     const data = doacoesSchema.parse(req.body)
