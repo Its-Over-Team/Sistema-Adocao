@@ -31,9 +31,9 @@ export const criarTutor = async (req, res) => {
     }
 
     if (
-      telefoneExistente |
-      celularExistente |
-      instagramExistente |
+      telefoneExistente ||
+      celularExistente ||
+      instagramExistente ||
       facebookExistente
     ) {
       return res.status(400).json({
