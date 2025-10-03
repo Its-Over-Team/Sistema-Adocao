@@ -1,11 +1,13 @@
 import { ZodError } from 'zod'
 import { Tutor } from '../models/Modelos'
 import { tutorSchema } from '../schemas/tutor.schemas'
+import criptografar from '../lib/encrypt'
 
 //POST /tutores
 export const criarTutor = async (req, res) => {
   try {
     const data = tutorSchema.parse(req.body)
+
     const emailExistente = await Tutor.findOne({
       where: { email: data.email },
     })
@@ -39,8 +41,15 @@ export const criarTutor = async (req, res) => {
       })
     }
 
-    const novoTutor = await Tutor.create(data)
-    return res.status(201).json(novoTutor)
+    const senhaCriptografada = criptografar(data.senha)
+
+    const novoTutor = {
+      ...data,
+      senha: senhaCriptografada
+    }
+
+    const tutor = await Tutor.create(novoTutor)
+    return res.status(201).json(tutor)
   } catch (err) {
     if (err instanceof ZodError) {
       return res.status(400).json({
@@ -71,11 +80,9 @@ export const listarTutor = async (req, res) => {
 export const atualizarTutor = async (req, res) => {
   try {
     const tutorId = req.params
-
     const tutorPatch = req.body
 
     const novoTutor = await Tutor.update(tutorPatch, { where: { tutorId } })
-
     return res.status(200).json(novoTutor)
   } catch {
     return res.status(500).json({ erro: 'Erro interno ao atualizar tutor' })
