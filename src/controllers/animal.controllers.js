@@ -32,14 +32,20 @@ export const criarAnimais = async (req, res) => {
 //GET /animais
 export const listarAnimais = async (req, res) => {
   try {
-    const animais = await Animal.findAll()
+    const animais = await Animal.findAll({
+      where: {
+        adotado: false,
+      },
+    })
+
     const total = animais.length
-    return res.status(200).json(animais, total)
+    return res.status(200).json({ data: animais, total })
   } catch {
     return res.status(500).json({ erro: 'Erro ao buscar animais' })
   }
 }
 
+//GET/animais/:id
 export const listarAnimal = async (req, res) => {
   try {
     const animalID = req.params

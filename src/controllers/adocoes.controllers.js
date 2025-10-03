@@ -2,6 +2,7 @@ import {Animal, Adocao, Tutor, PedidoAdocao} from '../models/Modelos.js'
 import { adocaoSchema } from '../schemas/adocao.schemas'
 import z from 'zod'
 
+//POST /adocoes
 export const criarAdocao = async (req, res) => {
   try {
     const data = adocaoSchema.parse(req.body)

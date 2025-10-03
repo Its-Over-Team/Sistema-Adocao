@@ -2,7 +2,7 @@ import { ZodError } from 'zod'
 import { Questionario, Tutor } from '../models/Modelos'
 import { questionarioSchema } from '../schemas/questionario.schemas'
 
-// POST
+//POST /questionario
 export const criarQuestionario = async (req, res) => {
   try {
     const data = questionarioSchema.parse(req.body)
