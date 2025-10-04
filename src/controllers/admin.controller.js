@@ -1,5 +1,5 @@
 import { Animal, Tutor } from '../models/Modelos'
-import z from 'zod'
+import { ZodError } from 'zod'
 
 //GET /admin/animais
 export const adminListarAnimais = async (req, res) => {
@@ -28,7 +28,7 @@ export const adminAtualizarAnimal = async (req, res) => {
 
     return res.status(200).json(novoAnimal)
   } catch (err) {
-    if (err instanceof z.ZodError) {
+    if (err instanceof ZodError) {
       return res.status(400).json({
         erro: 'Nenhum campo foi fornecido para atualização',
       })

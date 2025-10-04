@@ -1,4 +1,3 @@
-// models/adocao.js
 import { DataTypes } from 'sequelize'
 import sequelize from '../config/database'
 
@@ -22,8 +21,8 @@ export default (sqlize) => {
       },
       dataAdocao: {
         type: DataTypes.DATE,
-        allowNull: false,
         defaultValue: DataTypes.NOW,
+        allowNull: false,
       },
       status: {
         type: DataTypes.ENUM('pendente', 'concluída', 'cancelada'),

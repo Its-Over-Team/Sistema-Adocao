@@ -1,6 +1,6 @@
 import { Animal } from '../models/Modelos'
 import { animalSchema } from '../schemas/animal.schemas'
-import z from 'zod'
+import { ZodError } from 'zod'
 
 //POST /animais
 export const criarAnimais = async (req, res) => {
@@ -17,7 +17,7 @@ export const criarAnimais = async (req, res) => {
 
     return res.status(201).json(novoAnimal)
   } catch (err) {
-    if (err instanceof z.ZodError) {
+    if (err instanceof ZodError) {
       return res.status(400).json({
         erro: 'Todos os campos obrigatórios devem ser preenchidos corretamente.',
       })
