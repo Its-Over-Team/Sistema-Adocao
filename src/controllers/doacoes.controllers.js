@@ -1,6 +1,6 @@
 import { Doacao } from '../models/Modelos'
 import { doacoesSchema } from '../schemas/doacao.schemas'
-import z from 'zod'
+import { ZodError } from 'zod'
 
 //POST /doacoes
 export const criarDoacao = async (req, res) => {
@@ -11,7 +11,7 @@ export const criarDoacao = async (req, res) => {
 
     return res.status(201).json(novaDoacao)
   } catch (err) {
-    if (err instanceof z.ZodError) {
+    if (err instanceof ZodError) {
       return res.status(400).json({
         erro: 'Valor da doação é obrigatório e deve ser um número positivo',
       })
