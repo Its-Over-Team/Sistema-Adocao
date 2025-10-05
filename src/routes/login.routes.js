@@ -2,4 +2,4 @@ import { Router } from "express";
 
 const router = Router()
 
-router.post('/', criarLogin)
+router.post('/', fazerLogin)
