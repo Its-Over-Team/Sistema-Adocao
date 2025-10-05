@@ -9,7 +9,7 @@ export const criarDoacao = async (req, res) => {
     const data = doacoesSchema.parse(req.body)
 
     const linkPix = gerarPix(data.valor)
-    const qrCode = gerarQr(linkPix)
+    const qrCode = await gerarQr(linkPix)
 
     const doacao = {
       nome: data.nome,
@@ -27,6 +27,8 @@ export const criarDoacao = async (req, res) => {
     }
 
     const novaDoacao = await Doacao.create(doacao)
+
+    console.log(novaDoacao)
 
     return res.status(201).json(doacaoResposta)
   } catch (err) {
