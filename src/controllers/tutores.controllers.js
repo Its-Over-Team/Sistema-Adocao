@@ -70,7 +70,11 @@ export const listarTutor = async (req, res) => {
       return res.status(404).json({ erro: 'Tutor não encontrado' })
     }
 
-    return res.status(200).json(tutor)
+    const questionario = await Questionario.findOne({
+      where: { tutorId: tutorId },
+    })
+
+    return res.status(200).json({tutor, questionario})
   } catch {
     return res.status(500).json({ erro: 'Erro ao buscar dados do tutor' })
   }
