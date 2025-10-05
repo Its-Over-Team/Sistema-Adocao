@@ -1,7 +1,9 @@
-import { loginSchema } from '../schemas/login.schemas'
-import { Tutor } from '../models/Modelos'
-import descriptografar from '../lib/encrypt'
+import { ZodError } from 'zod'
+import { loginSchema } from '../schemas/login.schemas.js'
+import { Tutor } from '../models/Modelos.js'
+import { descriptografar } from '../lib/encrypt.js'
 
+// POST /login
 export const fazerLogin = async (req, res) => {
   try {
     const data = loginSchema.parse(req.body)
@@ -12,9 +14,9 @@ export const fazerLogin = async (req, res) => {
       return res.status(401).json({ erro: 'Email ou senha inválidos.' })
     }
 
-    const senha = descriptografar(tutor.senha)
+    const senhaDescriptografada = descriptografar(tutor.senha)
 
-    if (data.senha !== senha) {
+    if (data.senha !== senhaDescriptografada) {
       return res.status(401).json({ erro: 'Email ou senha inválidos.' })
     }
 
@@ -25,6 +27,7 @@ export const fazerLogin = async (req, res) => {
         erro: 'Todos os campos obrigatórios devem ser preenchidos corretamente.',
       })
     }
+
     return res
       .status(500)
       .json({ erro: 'Erro interno ao tentar fazer o login.' })

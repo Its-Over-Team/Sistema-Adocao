@@ -1,61 +1,74 @@
-import { Animal, Tutor } from '../models/Modelos'
+import { Animal } from '../models/Modelos.js'
 import { ZodError } from 'zod'
 
-//GET /admin/animais
+// GET /admin/animais
 export const adminListarAnimais = async (req, res) => {
   try {
     const animais = await Animal.findAll()
     const total = animais.length
+
     return res.status(200).json({ data: animais, total })
-  } catch {
+  } catch (err) {
+    console.error(err)
     return res.status(500).json({ erro: 'Erro ao buscar animais' })
   }
 }
 
-//PATCH /admin/animais/:id
+// PATCH /admin/animais/:id
 export const adminAtualizarAnimal = async (req, res) => {
   try {
-    const animalId = req.params
+    const { id } = req.params
+    const camposAtualizar = req.body
 
-    const animal = await Animal.findOne({ where: { animalId } })
+    if (!camposAtualizar || Object.keys(camposAtualizar).length === 0) {
+      return res
+        .status(400)
+        .json({ erro: 'Nenhum campo foi fornecido para atualização' })
+    }
+
+    const animal = await Animal.findByPk(id)
     if (!animal) {
       return res.status(404).json({ erro: 'Animal não encontrado' })
     }
 
-    const animalPatch = req.body
+    await animal.update(camposAtualizar)
 
-    const novoAnimal = await Tutor.update(animalPatch, { where: { animalId } })
-
-    return res.status(200).json(novoAnimal)
+    return res.status(200).json({
+      id: animal.id,
+      nome: animal.nome,
+      castrado: animal.castrado,
+      vacinado: animal.vacinado,
+      adotado: animal.adotado,
+      descricao: animal.descricao,
+      updated_at: animal.updatedAt,
+    })
   } catch (err) {
     if (err instanceof ZodError) {
-      return res.status(400).json({
-        erro: 'Nenhum campo foi fornecido para atualização',
-      })
-    } else {
-      return res.status(500).json({
-        erro: 'Erro ao atualizar o animal',
-      })
+      return res
+        .status(400)
+        .json({ erro: 'Nenhum campo foi fornecido para atualização' })
     }
+
+    console.error(err)
+    return res.status(500).json({ erro: 'Erro ao atualizar o animal' })
   }
 }
 
-//DELETE /admin/animais/:id
+// DELETE /admin/animais/:id
 export const adminRemoverAnimal = async (req, res) => {
   try {
-    const animalId = req.params
+    const { id } = req.params
 
-    const animal = await Animal.findOne({ where: { animalId } })
+    const animal = await Animal.findByPk(id)
     if (!animal) {
       return res.status(404).json({ erro: 'Animal não encontrado' })
     }
 
-    await Tutor.destroy({ where: { animalId } })
+    await animal.destroy()
 
-    return res.status(204).json({ erro: ' Animal removido com sucesso' })
-  } catch {
-    return res.status(500).json({
-      erro: 'Erro ao atualizar o animal',
-    })
+    return res.status(204).send()
+  } catch (err) {
+    console.error(err)
+    return res.status(500).json({ erro: 'Erro ao remover animal' })
   }
 }

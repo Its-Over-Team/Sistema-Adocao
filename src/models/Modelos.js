@@ -3,7 +3,7 @@ import TutorModel from './Usuario.js'
 import QuestionarioModel from './Questionario.js'
 import PedidoAdocaoModel from './PedidoAdocao.js'
 import DoacaoModel from './Doacoes.js'
-import sequelize from '../config/database'
+import sequelize from '../config/database.js'
 
 export const Animal = AnimalModel(sequelize)
 export const Tutor = TutorModel(sequelize)
@@ -20,4 +20,4 @@ export const Doacao = DoacaoModel(sequelize)
 
 await sequelize.sync()
 
-export default { Animal, Tutor, Questionario, PedidoAdocao, Doacao, Adocao }
+export default { Animal, Tutor, Questionario, PedidoAdocao, Doacao }

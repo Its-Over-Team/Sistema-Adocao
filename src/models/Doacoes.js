@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize'
-import sequelize from '../config/database'
+import sequelize from '../config/database.js'
 
 export default (sqlize) => {
   const Doacao = sequelize.define(
