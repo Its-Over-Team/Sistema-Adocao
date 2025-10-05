@@ -24,7 +24,7 @@ export const adminAtualizarAnimal = async (req, res) => {
 
     const animalPatch = req.body
 
-    const novoAnimal = await Tutor.update(animalPatch,{ where: { animalId } }  )
+    const novoAnimal = await Tutor.update(animalPatch, { where: { animalId } })
 
     return res.status(200).json(novoAnimal)
   } catch (err) {
@@ -40,3 +40,22 @@ export const adminAtualizarAnimal = async (req, res) => {
   }
 }
 
+//DELETE /admin/animais/:id
+export const adminRemoverAnimal = async (req, res) => {
+  try {
+    const animalId = req.params
+
+    const animal = await Animal.findOne({ where: { animalId } })
+    if (!animal) {
+      return res.status(404).json({ erro: 'Animal não encontrado' })
+    }
+
+    await Tutor.destroy({ where: { animalId } })
+
+    return res.status(204).json({ erro: ' Animal removido com sucesso' })
+  } catch {
+    return res.status(500).json({
+      erro: 'Erro ao atualizar o animal',
+    })
+  }
+}
