@@ -1,4 +1,4 @@
-import { Animal } from '../models/Modelos'
+import { Animal, PedidoAdocao } from '../models/Modelos'
 import { animalSchema } from '../schemas/animal.schemas'
 import { ZodError } from 'zod'
 
@@ -48,12 +48,18 @@ export const listarAnimais = async (req, res) => {
 //GET/animais/:id
 export const listarAnimal = async (req, res) => {
   try {
-    const animalID = req.params
-    const animal = await Animal.findOne(animalID)
+    const animalId = req.params
+    const animal = await Animal.findOne(animalId)
     if (!animal) {
       return res.status(404).json({ erro: 'Animal não encontrado' })
     }
-    return res.status(200).json(animal)
+
+    const pedidos = await PedidoAdocao.findAll({
+      attributes: ['id'],
+      where: { animalId: animalId },
+    })
+
+    return res.status(200).json({animal, pedidos})
   } catch {
     return res.status(500).json({ erro: 'Erro interno ao buscar animal' })
   }
