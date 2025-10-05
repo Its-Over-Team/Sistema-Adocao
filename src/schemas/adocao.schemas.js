@@ -1,7 +1,6 @@
 import { z } from 'zod'
 
 export const adocaoSchema = z.object({
-    adotanteNome: z.string(),
-    adotanteEmail: z.string(),
+    tutorId: z.uuid(),
     animalId: z.uuid()
 })
