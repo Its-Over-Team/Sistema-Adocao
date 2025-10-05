@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize'
-import sequelize from '../config/database'
+import sequelize from '../config/database.js'
 
 export default (sqlize) => {
   const Questionario = sequelize.define(
@@ -12,7 +12,7 @@ export default (sqlize) => {
         allowNull: false,
       },
       tutorId: {
-        type: DataTypes.UUIDV4,
+        type: DataTypes.UUID,
         allowNull: false,
       },
       empregado: {

@@ -1,5 +1,7 @@
-import { Pix } from 'pix-qrcode'
+import pkg from 'pix-qrcode'
 import QRCode from 'qrcode'
+
+const { Pix } = pkg
 
 export function gerarPix(valor) {
 

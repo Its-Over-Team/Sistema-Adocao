@@ -1,8 +1,8 @@
-import { Animal, PedidoAdocao } from '../models/Modelos'
-import { animalSchema } from '../schemas/animal.schemas'
+import { Animal, PedidoAdocao } from '../models/Modelos.js'
+import { animalSchema } from '../schemas/animal.schemas.js'
 import { ZodError } from 'zod'
 
-//POST /animais
+// POST /animais
 export const criarAnimais = async (req, res) => {
   try {
     const data = animalSchema.parse(req.body)
@@ -29,13 +29,12 @@ export const criarAnimais = async (req, res) => {
   }
 }
 
-//GET /animais
+// GET /animais
 export const listarAnimais = async (req, res) => {
   try {
     const animais = await Animal.findAll({
-      where: {
-        adotado: false,
-      },
+      where: { adotado: false },
+      order: [['createdAt', 'ASC']], // ordena do mais antigo ao mais recente
     })
 
     const total = animais.length
@@ -45,21 +44,38 @@ export const listarAnimais = async (req, res) => {
   }
 }
 
-//GET/animais/:id
+// GET /animais/:id
 export const listarAnimal = async (req, res) => {
   try {
-    const animalId = req.params
-    const animal = await Animal.findOne(animalId)
+    const { id } = req.params
+
+    // busca o animal pelo id
+    const animal = await Animal.findByPk(id)
+
     if (!animal) {
       return res.status(404).json({ erro: 'Animal não encontrado' })
     }
 
+    // busca os pedidos de adoção desse animal
     const pedidos = await PedidoAdocao.findAll({
       attributes: ['id'],
-      where: { animalId: animalId },
+      where: { animalId: id },
+      order: [['createdAt', 'ASC']], // do mais antigo para o mais recente
     })
 
-    return res.status(200).json({animal, pedidos})
+    // monta a resposta conforme a documentação
+    return res.status(200).json({
+      id: animal.id,
+      nome: animal.nome,
+      especie: animal.especie,
+      porte: animal.porte,
+      castrado: animal.castrado,
+      vacinado: animal.vacinado,
+      adotado: animal.adotado,
+      descricao: animal.descricao,
+      foto: animal.foto,
+      pedidos: pedidos.map((p) => p.id),
+    })
   } catch {
     return res.status(500).json({ erro: 'Erro interno ao buscar animal' })
   }
