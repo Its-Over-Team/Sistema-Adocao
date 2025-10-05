@@ -1,6 +1,5 @@
 import {
   Animal,
-  Adocao,
   Tutor,
   PedidoAdocao,
   Questionario,
@@ -13,7 +12,7 @@ export const criarAdocao = async (req, res) => {
   try {
     const data = adocaoSchema.parse(req.body)
 
-    const tutor = await Tutor.findOne({ where: { email: data.adotanteEmail } })
+    const tutor = await Tutor.findOne({ where: { id: data.tutorId } })
     if (!tutor) {
       return res.status(404).json({ erro: 'Tutor não encontrado' })
     }
@@ -25,7 +24,7 @@ export const criarAdocao = async (req, res) => {
 
     const questionarioExistente = await Questionario.findOne({
       where: {
-        tutorId: tutor.id,
+        tutorId: data.tutorId,
       },
     })
 
@@ -35,7 +34,7 @@ export const criarAdocao = async (req, res) => {
 
     const pedidoExistente = await PedidoAdocao.findOne({
       where: {
-        tutorId: tutor.id,
+        tutorId: data.tutorId,
         animalId: data.animalId
       },
     })
@@ -52,16 +51,14 @@ export const criarAdocao = async (req, res) => {
 
     const pedidoAdocao = {
       posicao_fila: posicao,
-      tutorId: tutor.id,
-      animalId: animal.id
+      tutorId: data.tutorId,
+      animalId: data.animalId
     }
 
     const novoPedidoAdocao = await PedidoAdocao.create(pedidoAdocao)
-    const novaAdocao = await Adocao.create(data)
 
     return res.status(201).json({
       pedido_adocao: novoPedidoAdocao, 
-      adocao: novaAdocao,
       criado_em: new Date()
     })
   } catch (err) {

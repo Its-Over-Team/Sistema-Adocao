@@ -3,14 +3,12 @@ import TutorModel from './Usuario.js'
 import QuestionarioModel from './Questionario.js'
 import PedidoAdocaoModel from './PedidoAdocao.js'
 import DoacaoModel from './Doacoes.js'
-import AdocaoModel from './Adocoes.js'
 import sequelize from '../config/database'
 
 export const Animal = AnimalModel(sequelize)
 export const Tutor = TutorModel(sequelize)
 export const Questionario = QuestionarioModel(sequelize)
 export const PedidoAdocao = PedidoAdocaoModel(sequelize)
-export const Adocao = AdocaoModel(sequelize)
 export const Doacao = DoacaoModel(sequelize)
 
 // Associações
