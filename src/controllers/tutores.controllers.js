@@ -1,5 +1,5 @@
 import { ZodError } from 'zod'
-import { Tutor } from '../models/Modelos'
+import { Questionario, Tutor } from '../models/Modelos'
 import { tutorSchema } from '../schemas/tutor.schemas'
 import criptografar from '../lib/encrypt'
 
@@ -45,7 +45,7 @@ export const criarTutor = async (req, res) => {
 
     const novoTutor = {
       ...data,
-      senha: senhaCriptografada
+      senha: senhaCriptografada,
     }
 
     const tutor = await Tutor.create(novoTutor)
@@ -64,7 +64,7 @@ export const criarTutor = async (req, res) => {
 export const listarTutor = async (req, res) => {
   try {
     const tutorId = req.params
-    const tutor = await Tutor.findOne({ where: { tutorId } })
+    const tutor = await Tutor.findOne({ where: { id: tutorId } })
 
     if (!tutor) {
       return res.status(404).json({ erro: 'Tutor não encontrado' })
@@ -82,9 +82,38 @@ export const atualizarTutor = async (req, res) => {
     const tutorId = req.params
     const tutorPatch = req.body
 
-    const novoTutor = await Tutor.update(tutorPatch, { where: { tutorId } })
+    const tutor = await Tutor.findOne({ where: { id: tutorId } })
+    if (!tutor) {
+      return res.status(404).json({ erro: 'Tutor não encontrado' })
+    }
+
+    if (!tutorPatch) {
+      return res
+        .status(400)
+        .json({ erro: 'Pelo menos um campo deve ser enviado para atualização' })
+    }
+
+    if (tutorPatch.hasOwnProperty('questionario')) {
+      const questionario = await Questionario.findOne({
+        where: { tutorId: tutorId },
+      })
+      const novoQuestionario = await Questionario.update(
+        tutorPatch.questionario,
+        {
+          where: { id: questionario.id },
+        }
+      )
+      delete tutorPatch.questionario
+
+      const novoTutor = await Tutor.update(tutorPatch, {
+        where: { id: tutorId },
+      })
+      return res.status(200).json({ novoTutor, novoQuestionario })
+    }
+
+    const novoTutor = await Tutor.update(tutorPatch, { where: { id: tutorId } })
     return res.status(200).json(novoTutor)
   } catch {
-    return res.status(500).json({ erro: 'Erro interno ao atualizar tutor' })
+    return res.status(500).json({ erro: 'Erro ao atualizar os dados do tutor' })
   }
 }
