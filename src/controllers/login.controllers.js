@@ -1,7 +1,7 @@
 import { ZodError } from 'zod'
 import { loginSchema } from '../schemas/login.schemas.js'
 import { Tutor } from '../models/Modelos.js'
-import { descriptografar } from '../lib/encrypt.js'
+import { criptografar, descriptografar } from '../lib/encrypt.js'
 
 // POST /login
 export const fazerLogin = async (req, res) => {
@@ -19,6 +19,16 @@ export const fazerLogin = async (req, res) => {
     if (data.senha !== senhaDescriptografada) {
       return res.status(401).json({ erro: 'Email ou senha inválidos.' })
     }
+
+    const idCriptografado = criptografar(tutor.id)
+
+    res.setHeader('user-token', idCriptografado)
+
+    res.cookie('user-token', idCriptografado, {
+      httpOnly: true,
+      sameSite: 'Strict',
+      maxAge: 1000 * 60 * 60 * 24,
+    })
 
     return res.status(200).json({ message: 'Login bem-sucedido' })
   } catch (err) {

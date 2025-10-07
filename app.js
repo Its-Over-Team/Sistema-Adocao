@@ -1,4 +1,5 @@
 import express from 'express'
+import cookieParser from 'cookie-parser'
 import { adminRoutes } from './src/routes/admin.routes.js'
 import { animalRoutes } from './src/routes/animal.routes.js'
 import { tutorRoutes } from './src/routes/tutor.routes.js'
@@ -8,6 +9,7 @@ import { loginRoutes } from './src/routes/login.routes.js'
 import { doacoesRoutes } from './src/routes/doacoes.routes.js'
 
 export const app = express()
+app.use(cookieParser())
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
