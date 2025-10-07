@@ -1,4 +1,4 @@
-## 👥 Nossa Equipe
+## 👥 Nossa Equipe - 2ºDS AMS
 
 Conheça os membros que fazem a Its Over acontecer:
 
