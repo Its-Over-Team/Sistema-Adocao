@@ -11,12 +11,12 @@ async function seedAdmin() {
   try {
     await sequelize.sync({ force: false })
 
-    const adminEmail = 'admin@adocao.com'
+    const adminEmail = process.env.ADM_EMAIL
 
     const existe = await Tutor.findOne({ where: { email: adminEmail } })
 
     if (!existe) {
-      const senhaCriptografada = criptografar('admin123')
+      const senhaCriptografada = criptografar(process.env.ADM_PASSWORD)
 
       await Tutor.create({
         nome_completo: 'Administrador do Sistema',
