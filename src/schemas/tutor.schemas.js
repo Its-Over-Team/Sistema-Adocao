@@ -10,6 +10,7 @@ export const tutorSchema = z.object({
     telefone: z.string(),
     celular: z.string().optional().nullable(),
     endereco: z.string().optional().nullable(),
+    cpf: z.string(),
     bairro: z.string().optional().nullable(),
     cep: z.number().int().optional().nullable(),
     instagram: z.string().optional().nullable(),
