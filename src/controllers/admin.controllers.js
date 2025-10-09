@@ -4,7 +4,11 @@ import { ZodError } from 'zod'
 // GET /admin/animais
 export const adminListarAnimais = async (req, res) => {
   try {
-    const animais = await Animal.findAll()
+    const animais = await Animal.findAll({
+      order: [['createdAt', 'ASC']],
+      attributes: { exclude: ['foto'] },
+    })
+
     const total = animais.length
 
     return res.status(200).json({ data: animais, total })
@@ -26,7 +30,7 @@ export const adminAtualizarAnimal = async (req, res) => {
         .json({ erro: 'Nenhum campo foi fornecido para atualização' })
     }
 
-    const animal = await Animal.findByPk(id)
+    const animal = await Animal.findOne({ where: { id: id } })
     if (!animal) {
       return res.status(404).json({ erro: 'Animal não encontrado' })
     }
@@ -59,7 +63,7 @@ export const adminRemoverAnimal = async (req, res) => {
   try {
     const { id } = req.params
 
-    const animal = await Animal.findByPk(id)
+    const animal = await Animal.findOne({ where: { id: id } })
     if (!animal) {
       return res.status(404).json({ erro: 'Animal não encontrado' })
     }

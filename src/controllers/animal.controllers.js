@@ -6,17 +6,24 @@ import { ZodError } from 'zod'
 export const criarAnimais = async (req, res) => {
   try {
     const data = animalSchema.parse(req.body)
-    const foto = req.file ? req.file.buffer : null
+    const foto = req.file
+      ? req.file.buffer
+      : typeof req.body.foto === 'string'
+      ? req.body.foto.startsWith('data:')
+        ? Buffer.from(req.body.foto.split(',')[1], 'base64')
+        : Buffer.from(req.body.foto, 'base64')
+      : null
 
     const animal = {
       ...data,
       foto,
     }
 
-    const novoAnimal = await Animal.create(animal)
+    await Animal.create(animal)
 
-    return res.status(201).json(novoAnimal)
+    return res.status(201).json(data)
   } catch (err) {
+    console.log(err)
     if (err instanceof ZodError) {
       return res.status(400).json({
         erro: 'Todos os campos obrigatórios devem ser preenchidos corretamente.',
@@ -34,10 +41,12 @@ export const listarAnimais = async (req, res) => {
   try {
     const animais = await Animal.findAll({
       where: { adotado: false },
-      order: [['createdAt', 'ASC']], // ordena do mais antigo ao mais recente
+      order: [['createdAt', 'ASC']],
+      attributes: { exclude: ['foto'] },
     })
 
     const total = animais.length
+
     return res.status(200).json({ data: animais, total })
   } catch {
     return res.status(500).json({ erro: 'Erro ao buscar animais' })
@@ -50,7 +59,9 @@ export const listarAnimal = async (req, res) => {
     const { id } = req.params
 
     // busca o animal pelo id
-    const animal = await Animal.findByPk(id)
+    const animal = await Animal.findOne({ where: { id: id } })
+
+    console.log(animal)
 
     if (!animal) {
       return res.status(404).json({ erro: 'Animal não encontrado' })
@@ -73,7 +84,6 @@ export const listarAnimal = async (req, res) => {
       vacinado: animal.vacinado,
       adotado: animal.adotado,
       descricao: animal.descricao,
-      foto: animal.foto,
       pedidos: pedidos.map((p) => p.id),
     })
   } catch {
